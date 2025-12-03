@@ -1,0 +1,11 @@
+python-dotenv
+streamlit
+langchain-core
+langchain-community
+langchain-openai
+langchainhub
+langchain-text-splitters
+chromadb
+unstructured[md]
+lark
+tiktoken
