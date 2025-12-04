@@ -1,0 +1,14 @@
+[
+  {
+    "id": "E001",
+    "nombre": "Ana",
+    "vacaciones_totales": 22,
+    "vacaciones_usadas": 10
+  },
+  {
+    "id": "E002",
+    "nombre": "Carlos",
+    "vacaciones_totales": 25,
+    "vacaciones_usadas": 15
+  }
+]
