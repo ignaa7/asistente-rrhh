@@ -1,0 +1,14 @@
+[
+  {
+    "id_baja": "BM001",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-05",
+    "fecha_fin_estimada": null,
+    "motivo": "No especificado",
+    "tiene_justificante": false,
+    "estado": "activa",
+    "fecha_reporte": "2025-12-05 19:44:57",
+    "notas": ""
+  }
+]
