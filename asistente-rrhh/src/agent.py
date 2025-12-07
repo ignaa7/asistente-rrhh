@@ -11,13 +11,15 @@ from src.tools import calcular_vacaciones, solicitar_vacaciones, reportar_baja_m
 # Cargar variables de entorno
 load_dotenv()
 
-def get_agent(memory=None):
+def get_agent(memory=None, user_context=None):
     """
     Configura y devuelve el AgentExecutor listo para usar.
     
     Args:
-        memory: Objeto de memoria conversacional (ConversationSummaryBufferMemory). 
+        memory: Objeto de memoria conversacional (ConversationBufferMemory). 
                 Si no se proporciona, se crea uno nuevo.
+        user_context: Diccionario con información del usuario logueado.
+                     Ejemplo: {"id": "E001", "nombre": "Ana", "cargo": "Desarrolladora"}
     """
     # 1. Configurar LLM (OpenRouter con GPT-3.5-turbo)
     api_key = os.getenv("OPENROUTER_API_KEY")
@@ -51,12 +53,31 @@ def get_agent(memory=None):
             output_key="output"
         )
 
-    # 4. Configurar Prompt con historial de chat
+    # 4. Configurar Prompt con contexto del usuario
+    # Construir información del usuario para el sistema
+    user_info = ""
+    if user_context:
+        user_info = f"""
+INFORMACIÓN DEL USUARIO ACTUAL:
+- Nombre: {user_context['nombre']}
+- ID de Empleado: {user_context['id']}
+- Cargo: {user_context['cargo']}
+- Vacaciones totales: {user_context['vacaciones_totales']} días
+- Vacaciones usadas: {user_context['vacaciones_usadas']} días
+- Vacaciones restantes: {user_context['vacaciones_totales'] - user_context['vacaciones_usadas']} días
+
+IMPORTANTE: El usuario ya está autenticado en el sistema. Cuando use herramientas que requieren id_empleado, 
+usa automáticamente '{user_context['id']}' sin pedírselo al usuario. El usuario NO necesita decirte su ID.
+Dirígete al usuario por su nombre ({user_context['nombre']}) de forma natural y cercana.
+"""
+    
     prompt = ChatPromptTemplate.from_messages([
-        ("system", """Eres un asistente de RRHH útil y amable. 
+        ("system", f"""Eres un asistente de RRHH útil y amable. 
+
+{user_info}
 
 Cuando un empleado te haga una pregunta:
-1. Recuerda el contexto de la conversación actual (nombre del empleado, ID, solicitudes previas, etc.)
+1. Recuerda el contexto de la conversación actual y la información del usuario logueado
 2. Usa las herramientas disponibles para buscar la información necesaria
 3. Lee CUIDADOSAMENTE la información que te devuelven las herramientas
 4. Responde basándote en esa información de forma clara y directa

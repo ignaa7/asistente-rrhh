@@ -2,13 +2,19 @@
   {
     "id": "E001",
     "nombre": "Ana",
+    "cargo": "Desarrolladora Senior",
     "vacaciones_totales": 22,
-    "vacaciones_usadas": 10
+    "vacaciones_usadas": 10,
+    "password": "Ana2024#",
+    "foto_perfil": null
   },
   {
     "id": "E002",
     "nombre": "Carlos",
+    "cargo": "Director de Proyectos",
     "vacaciones_totales": 25,
-    "vacaciones_usadas": 15
+    "vacaciones_usadas": 15,
+    "password": "Carlos2024#",
+    "foto_perfil": null
   }
 ]
