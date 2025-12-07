@@ -261,6 +261,93 @@ def reportar_baja_medica(
         return f"❌ Error al procesar el reporte de baja médica: {str(e)}"
 
 
+@tool
+def consultar_nomina(id_empleado: str, mes: str = "") -> str:
+    """
+    Consulta la nómina/recibo de pago de un empleado.
+    Si no se especifica mes, devuelve la última nómina disponible.
+    
+    Args:
+        id_empleado: ID del empleado (ej: E001, E002) - OBLIGATORIO
+        mes: Mes de la nómina en formato YYYY-MM (ej: 2025-11) - OPCIONAL
+             Si no se especifica, devuelve la última nómina
+    
+    Returns:
+        Información detallada de la nómina solicitada
+    """
+    NOMINAS_PATH = os.path.join(BASE_DIR, "src", "data", "nominas.json")
+    
+    try:
+        # 1. Cargar datos del empleado para verificar que existe
+        with open(DATA_PATH, 'r', encoding='utf-8') as f:
+            empleados = json.load(f)
+        
+        empleado = next((e for e in empleados if e["id"] == id_empleado), None)
+        
+        if not empleado:
+            return f"❌ No se encontró ningún empleado con el ID {id_empleado}."
+        
+        # 2. Cargar nóminas
+        if not os.path.exists(NOMINAS_PATH):
+            return "❌ Error: No se encontró la base de datos de nóminas."
+        
+        with open(NOMINAS_PATH, 'r', encoding='utf-8') as f:
+            nominas = json.load(f)
+        
+        # 3. Filtrar nóminas del empleado
+        nominas_empleado = [n for n in nominas if n["id_empleado"] == id_empleado]
+        
+        if not nominas_empleado:
+            return f"❌ No se encontraron nóminas para el empleado {empleado['nombre']} ({id_empleado})."
+        
+        # 4. Seleccionar nómina según criterio
+        if mes:
+            # Buscar nómina del mes específico
+            nomina = next((n for n in nominas_empleado if n["mes"] == mes), None)
+            
+            if not nomina:
+                meses_disponibles = [n["mes"] for n in nominas_empleado]
+                return (f"❌ No se encontró nómina para el mes {mes}.\n"
+                       f"Meses disponibles: {', '.join(sorted(meses_disponibles))}")
+        else:
+            # Devolver la última nómina (ordenar por mes descendente)
+            nominas_empleado_ordenadas = sorted(nominas_empleado, key=lambda x: x["mes"], reverse=True)
+            nomina = nominas_empleado_ordenadas[0]
+        
+        # 5. Formatear respuesta con toda la información
+        conceptos = nomina["conceptos"]
+        
+        respuesta = f"💰 **Nómina de {nomina['nombre_empleado']}** ({id_empleado})\n\n"
+        respuesta += f"📅 **Mes**: {nomina['mes']}\n"
+        respuesta += f"📆 **Fecha de pago**: {nomina['fecha_pago']}\n"
+        respuesta += f"🆔 **ID Nómina**: {nomina['id_nomina']}\n\n"
+        
+        respuesta += f"**DESGLOSE SALARIAL**\n"
+        respuesta += f"{'─'*40}\n"
+        respuesta += f"Salario Base:           {conceptos['base']:>10.2f} €\n"
+        respuesta += f"Complementos:           {conceptos['complementos']:>10.2f} €\n"
+        respuesta += f"{'─'*40}\n"
+        respuesta += f"**Salario Bruto:        {nomina['salario_bruto']:>10.2f} €**\n\n"
+        
+        respuesta += f"**DEDUCCIONES**\n"
+        respuesta += f"{'─'*40}\n"
+        respuesta += f"IRPF:                   {conceptos['irpf']:>10.2f} €\n"
+        respuesta += f"Seguridad Social:       {conceptos['seguridad_social']:>10.2f} €\n"
+        respuesta += f"{'─'*40}\n"
+        respuesta += f"Total Deducciones:      {nomina['deducciones']:>10.2f} €\n\n"
+        
+        respuesta += f"{'═'*40}\n"
+        respuesta += f"**💵 SALARIO NETO:      {nomina['salario_neto']:>10.2f} €**\n"
+        respuesta += f"{'═'*40}\n"
+        
+        return respuesta
+        
+    except FileNotFoundError:
+        return "❌ Error: No se encontraron los archivos necesarios."
+    except Exception as e:
+        return f"❌ Error al consultar la nómina: {str(e)}"
+
+
 if __name__ == "__main__":
     print(calcular_vacaciones.invoke("E001"))
     print("\n" + "="*50 + "\n")
@@ -278,3 +365,13 @@ if __name__ == "__main__":
         "motivo": "Gripe",
         "notas": "Reposo en casa"
     }))
+    print("\n" + "="*50 + "\n")
+    print(consultar_nomina.invoke({
+        "id_empleado": "E001"
+    }))
+    print("\n" + "="*50 + "\n")
+    print(consultar_nomina.invoke({
+        "id_empleado": "E002",
+        "mes": "2025-11"
+    }))
+

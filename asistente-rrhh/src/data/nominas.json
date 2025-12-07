@@ -1,0 +1,130 @@
+[
+    {
+        "id_nomina": "NOM001",
+        "id_empleado": "E001",
+        "nombre_empleado": "Ana",
+        "mes": "2025-09",
+        "salario_bruto": 2500.00,
+        "deducciones": 450.00,
+        "salario_neto": 2050.00,
+        "fecha_pago": "2025-09-30",
+        "conceptos": {
+            "base": 2000.00,
+            "complementos": 500.00,
+            "irpf": -300.00,
+            "seguridad_social": -150.00
+        }
+    },
+    {
+        "id_nomina": "NOM002",
+        "id_empleado": "E001",
+        "nombre_empleado": "Ana",
+        "mes": "2025-10",
+        "salario_bruto": 2500.00,
+        "deducciones": 450.00,
+        "salario_neto": 2050.00,
+        "fecha_pago": "2025-10-31",
+        "conceptos": {
+            "base": 2000.00,
+            "complementos": 500.00,
+            "irpf": -300.00,
+            "seguridad_social": -150.00
+        }
+    },
+    {
+        "id_nomina": "NOM003",
+        "id_empleado": "E001",
+        "nombre_empleado": "Ana",
+        "mes": "2025-11",
+        "salario_bruto": 2600.00,
+        "deducciones": 470.00,
+        "salario_neto": 2130.00,
+        "fecha_pago": "2025-11-30",
+        "conceptos": {
+            "base": 2000.00,
+            "complementos": 600.00,
+            "irpf": -320.00,
+            "seguridad_social": -150.00
+        }
+    },
+    {
+        "id_nomina": "NOM004",
+        "id_empleado": "E001",
+        "nombre_empleado": "Ana",
+        "mes": "2025-12",
+        "salario_bruto": 2500.00,
+        "deducciones": 450.00,
+        "salario_neto": 2050.00,
+        "fecha_pago": "2025-12-31",
+        "conceptos": {
+            "base": 2000.00,
+            "complementos": 500.00,
+            "irpf": -300.00,
+            "seguridad_social": -150.00
+        }
+    },
+    {
+        "id_nomina": "NOM005",
+        "id_empleado": "E002",
+        "nombre_empleado": "Carlos",
+        "mes": "2025-09",
+        "salario_bruto": 3000.00,
+        "deducciones": 600.00,
+        "salario_neto": 2400.00,
+        "fecha_pago": "2025-09-30",
+        "conceptos": {
+            "base": 2500.00,
+            "complementos": 500.00,
+            "irpf": -400.00,
+            "seguridad_social": -200.00
+        }
+    },
+    {
+        "id_nomina": "NOM006",
+        "id_empleado": "E002",
+        "nombre_empleado": "Carlos",
+        "mes": "2025-10",
+        "salario_bruto": 3000.00,
+        "deducciones": 600.00,
+        "salario_neto": 2400.00,
+        "fecha_pago": "2025-10-31",
+        "conceptos": {
+            "base": 2500.00,
+            "complementos": 500.00,
+            "irpf": -400.00,
+            "seguridad_social": -200.00
+        }
+    },
+    {
+        "id_nomina": "NOM007",
+        "id_empleado": "E002",
+        "nombre_empleado": "Carlos",
+        "mes": "2025-11",
+        "salario_bruto": 3200.00,
+        "deducciones": 640.00,
+        "salario_neto": 2560.00,
+        "fecha_pago": "2025-11-30",
+        "conceptos": {
+            "base": 2500.00,
+            "complementos": 700.00,
+            "irpf": -440.00,
+            "seguridad_social": -200.00
+        }
+    },
+    {
+        "id_nomina": "NOM008",
+        "id_empleado": "E002",
+        "nombre_empleado": "Carlos",
+        "mes": "2025-12",
+        "salario_bruto": 3000.00,
+        "deducciones": 600.00,
+        "salario_neto": 2400.00,
+        "fecha_pago": "2025-12-31",
+        "conceptos": {
+            "base": 2500.00,
+            "complementos": 500.00,
+            "irpf": -400.00,
+            "seguridad_social": -200.00
+        }
+    }
+]

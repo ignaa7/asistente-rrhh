@@ -1,12 +1,12 @@
 import os
 from dotenv import load_dotenv
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_openai import ChatOpenAI
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.tools.retriever import create_retriever_tool
 from langchain.memory import ConversationSummaryBufferMemory
 from src.rag import get_retriever
-from src.tools import calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica
+from src.tools import calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, consultar_nomina
 
 # Cargar variables de entorno
 load_dotenv()
@@ -19,14 +19,15 @@ def get_agent(memory=None):
         memory: Objeto de memoria conversacional (ConversationSummaryBufferMemory). 
                 Si no se proporciona, se crea uno nuevo.
     """
-    # 1. Configurar LLM (Google Gemini)
-    api_key = os.getenv("GOOGLE_API_KEY")
+    # 1. Configurar LLM (OpenRouter con GPT-3.5-turbo)
+    api_key = os.getenv("OPENROUTER_API_KEY")
     if not api_key:
-        raise ValueError("GOOGLE_API_KEY no está configurada en el archivo .env")
+        raise ValueError("OPENROUTER_API_KEY no está configurada en el archivo .env")
 
-    llm = ChatGoogleGenerativeAI(
-        model="gemini-2.5-flash",
-        google_api_key=api_key,
+    llm = ChatOpenAI(
+        model="openai/gpt-3.5-turbo",
+        openai_api_key=api_key,
+        openai_api_base="https://openrouter.ai/api/v1",
         temperature=0
     )
 
@@ -39,13 +40,12 @@ def get_agent(memory=None):
         "Busca información sobre políticas de recursos humanos, teletrabajo, bajas médicas y beneficios en el manual del empleado."
     )
     
-    tools = [rag_tool, calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica]
+    tools = [rag_tool, calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, consultar_nomina]
 
     # 3. Configurar Memoria si no se proporciona
     if memory is None:
-        memory = ConversationSummaryBufferMemory(
-            llm=llm,
-            max_token_limit=1000,  # Mantiene resumen + últimos mensajes hasta 1000 tokens
+        from langchain.memory import ConversationBufferMemory
+        memory = ConversationBufferMemory(
             memory_key="chat_history",
             return_messages=True,
             output_key="output"

@@ -1,7 +1,7 @@
 import streamlit as st
 from src.agent import get_agent
-from langchain.memory import ConversationSummaryBufferMemory
-from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain.memory import ConversationBufferMemory
+from langchain_openai import ChatOpenAI
 import os
 from dotenv import load_dotenv
 
@@ -15,18 +15,33 @@ st.set_page_config(
     initial_sidebar_state="expanded"
 )
 
+
+# ==================== MAIN CONTENT ====================
+st.title("👔 Asistente Virtual de RRHH")
+st.markdown("""
+Bienvenido al asistente de RRHH. Puedes preguntarme sobre:
+- **Políticas de la empresa** (vacaciones, teletrabajo, bajas...)
+- **Tus días de vacaciones** (necesitaré tu ID de empleado, ej: E001, E002)
+- **Solicitar vacaciones o reportar bajas médicas**
+
+💡 *Ahora recuerdo el contexto de nuestra conversación*
+""")
+
+# Inicializar historial de chat
+if "messages" not in st.session_state:
+    st.session_state.messages = []
+
+# Inicializar avatares
+if "user_avatar" not in st.session_state:
+    st.session_state.user_avatar = "👤"  # Emoji por defecto, se puede cambiar por imagen
+
+if "assistant_avatar" not in st.session_state:
+    st.session_state.assistant_avatar = "🤖"  # Emoji por defecto
+
 # ==================== SIDEBAR ====================
 with st.sidebar:
     st.title("👔 Asistente RRHH")
     st.markdown("---")
-    
-    # Información del usuario (para futuro login)
-    # Por ahora mostramos avatar genérico, preparado para fotos de perfil
-    if "user_avatar" not in st.session_state:
-        st.session_state.user_avatar = "👤"  # Emoji por defecto, se puede cambiar por imagen
-    
-    if "assistant_avatar" not in st.session_state:
-        st.session_state.assistant_avatar = "🤖"  # Emoji por defecto
     
     # Botón para limpiar historial con confirmación
     st.subheader("⚙️ Opciones")
@@ -44,17 +59,8 @@ with st.sidebar:
                 # Limpiar TODO: historial visual + memoria del agente
                 st.session_state.messages = []
                 
-                # Reinicializar memoria
-                api_key = os.getenv("GOOGLE_API_KEY")
-                llm = ChatGoogleGenerativeAI(
-                    model="gemini-2.5-flash",
-                    google_api_key=api_key,
-                    temperature=0
-                )
-                
-                st.session_state.memory = ConversationSummaryBufferMemory(
-                    llm=llm,
-                    max_token_limit=1000,
+                # Reinicializar memoria simple
+                st.session_state.memory = ConversationBufferMemory(
                     memory_key="chat_history",
                     return_messages=True,
                     output_key="output"
@@ -69,6 +75,76 @@ with st.sidebar:
             if st.button("❌ No", use_container_width=True):
                 st.session_state.show_confirm_clear = False
                 st.rerun()
+    
+    st.markdown("---")
+    
+    # Botones para exportar conversación
+    st.subheader("📥 Exportar Conversación")
+    
+    if st.session_state.messages:
+        from datetime import datetime
+        
+        # Generar contenido para exportar
+        def generar_contenido_txt():
+            """Genera el contenido en formato .txt"""
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            num_mensajes = len(st.session_state.messages)
+            
+            contenido = f"CONVERSACIÓN CON ASISTENTE DE RRHH\n"
+            contenido += f"Exportado: {timestamp}\n"
+            contenido += f"Total de mensajes: {num_mensajes}\n"
+            contenido += f"{'='*60}\n\n"
+            
+            for i, msg in enumerate(st.session_state.messages, 1):
+                rol = "USUARIO" if msg["role"] == "user" else "ASISTENTE"
+                contenido += f"[{i}] {rol}:\n"
+                contenido += f"{msg['content']}\n\n"
+                contenido += f"{'-'*60}\n\n"
+            
+            return contenido
+        
+        def generar_contenido_md():
+            """Genera el contenido en formato .md"""
+            timestamp = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            num_mensajes = len(st.session_state.messages)
+            
+            contenido = f"# Conversación con Asistente de RRHH\n\n"
+            contenido += f"**Exportado:** {timestamp}  \n"
+            contenido += f"**Total de mensajes:** {num_mensajes}\n\n"
+            contenido += f"---\n\n"
+            
+            for i, msg in enumerate(st.session_state.messages, 1):
+                if msg["role"] == "user":
+                    contenido += f"## 👤 Usuario (Mensaje {i})\n\n"
+                else:
+                    contenido += f"## 🤖 Asistente (Mensaje {i})\n\n"
+                
+                contenido += f"{msg['content']}\n\n"
+                contenido += f"---\n\n"
+            
+            return contenido
+        
+        # Botón para exportar como .txt
+        contenido_txt = generar_contenido_txt()
+        st.download_button(
+            label="📄 Exportar como TXT",
+            data=contenido_txt,
+            file_name=f"conversacion_rrhh_{datetime.now().strftime('%Y%m%d_%H%M%S')}.txt",
+            mime="text/plain",
+            use_container_width=True
+        )
+        
+        # Botón para exportar como .md
+        contenido_md = generar_contenido_md()
+        st.download_button(
+            label="📝 Exportar como MD",
+            data=contenido_md,
+            file_name=f"conversacion_rrhh_{datetime.now().strftime('%Y%m%d_%H%M%S')}.md",
+            mime="text/markdown",
+            use_container_width=True
+        )
+    else:
+        st.info("💬 No hay conversación para exportar todavía")
     
     st.markdown("---")
     
@@ -90,36 +166,12 @@ with st.sidebar:
             st.session_state.faq_question = question
             st.rerun()
 
-# ==================== MAIN CONTENT ====================
-st.title("👔 Asistente Virtual de RRHH")
-st.markdown("""
-Bienvenido al asistente de RRHH. Puedes preguntarme sobre:
-- **Políticas de la empresa** (vacaciones, teletrabajo, bajas...)
-- **Tus días de vacaciones** (necesitaré tu ID de empleado, ej: E001, E002)
-- **Solicitar vacaciones o reportar bajas médicas**
-
-💡 *Ahora recuerdo el contexto de nuestra conversación*
-""")
-
-# Inicializar historial de chat
-if "messages" not in st.session_state:
-    st.session_state.messages = []
 
 # Inicializar memoria conversacional (solo una vez)
 if "memory" not in st.session_state:
     try:
-        # Crear LLM para la memoria
-        api_key = os.getenv("GOOGLE_API_KEY")
-        llm = ChatGoogleGenerativeAI(
-            model="gemini-2.5-flash",
-            google_api_key=api_key,
-            temperature=0
-        )
-        
-        # Crear memoria con resumen + buffer
-        st.session_state.memory = ConversationSummaryBufferMemory(
-            llm=llm,
-            max_token_limit=1000,  # Mantiene resumen + últimos mensajes hasta 1000 tokens
+        # Crear memoria conversacional simple (sin conteo de tokens)
+        st.session_state.memory = ConversationBufferMemory(
             memory_key="chat_history",
             return_messages=True,
             output_key="output"
@@ -163,6 +215,7 @@ if st.session_state.get("faq_question"):
                 
                 # Guardar respuesta en historial de Streamlit
                 st.session_state.messages.append({"role": "assistant", "content": output_text})
+                st.rerun()  # Forzar actualización del sidebar
         except Exception as e:
             st.error(f"Ocurrió un error: {e}")
 
@@ -184,6 +237,7 @@ if prompt := st.chat_input("¿En qué puedo ayudarte hoy?"):
                 
                 # Guardar respuesta en historial de Streamlit
                 st.session_state.messages.append({"role": "assistant", "content": output_text})
+                st.rerun()  # Forzar actualización del sidebar
                 
         except Exception as e:
             st.error(f"Ocurrió un error: {e}")
