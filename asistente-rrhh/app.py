@@ -140,85 +140,92 @@ def validar_login(id_empleado, password):
     return None
 
 # ==================== PANTALLA DE LOGIN ====================
+# ==================== PANTALLA DE LOGIN ====================
 if "usuario" not in st.session_state:
-    st.title("👔 Asistente Virtual de RRHH")
-    st.markdown("### 🔐 Iniciar Sesión")
-    st.markdown("Por favor, ingresa tus credenciales para acceder al sistema.")
+    # Crear un placeholder para toda la pantalla de login
+    login_placeholder = st.empty()
     
-    col1, col2, col3 = st.columns([1, 2, 1])
-    
-    with col2:
-        st.markdown("---")
+    with login_placeholder.container():
+        st.title("👔 Asistente Virtual de RRHH")
+        st.markdown("### 🔐 Iniciar Sesión")
+        st.markdown("Por favor, ingresa tus credenciales para acceder al sistema.")
         
-        # CSS personalizado para el login
-        st.markdown("""
-        <style>
-        /* Inputs - forzar azul en TODOS los estados de focus */
-        div[data-testid="stForm"] input:focus,
-        div[data-testid="stForm"] input:focus-visible,
-        div[data-testid="stForm"] input[type="text"]:focus,
-        div[data-testid="stForm"] input[type="password"]:focus {
-            border-color: #0066cc !important;
-            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
-            outline: none !important;
-        }
+        col1, col2, col3 = st.columns([1, 2, 1])
         
-        /* Contenedor de inputs - forzar azul */
-        div[data-testid="stForm"] div[data-baseweb="input"]:focus-within {
-            border-color: #0066cc !important;
-            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
-        }
-        
-        /* Botón de login - forzar azul en todos los estados */
-        div[data-testid="stFormSubmitButton"] button {
-            background-color: #0066cc !important;
-            color: white !important;
-            border-color: #0066cc !important;
-        }
-        div[data-testid="stFormSubmitButton"] button:hover {
-            background-color: #0052a3 !important;
-            color: white !important;
-            border-color: #0052a3 !important;
-        }
-        div[data-testid="stFormSubmitButton"] button:active {
-            background-color: #003d7a !important;
-            color: white !important;
-            border-color: #003d7a !important;
-        }
-        div[data-testid="stFormSubmitButton"] button:focus,
-        div[data-testid="stFormSubmitButton"] button:focus-visible {
-            background-color: #0052a3 !important;
-            color: white !important;
-            border-color: #0052a3 !important;
-            box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
-            outline: none !important;
-        }
-        </style>
-        """, unsafe_allow_html=True)
-        
-        # Usar formulario para permitir Enter/Intro
-        with st.form("login_form"):
-            id_empleado = st.text_input("ID de Empleado", placeholder="Ej: E001")
-            password = st.text_input("Contraseña", type="password", placeholder="Introduce tu contraseña")
+        with col2:
+            st.markdown("---")
             
-            st.markdown("")  # Espacio
+            # CSS personalizado para el login
+            st.markdown("""
+            <style>
+            /* Inputs - forzar azul en TODOS los estados de focus */
+            div[data-testid="stForm"] input:focus,
+            div[data-testid="stForm"] input:focus-visible,
+            div[data-testid="stForm"] input[type="text"]:focus,
+            div[data-testid="stForm"] input[type="password"]:focus {
+                border-color: #0066cc !important;
+                box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
+                outline: none !important;
+            }
             
-            # Submit button (sin type="primary" para evitar color rojo)
-            submitted = st.form_submit_button("🔓 Iniciar Sesión", use_container_width=True)
+            /* Contenedor de inputs - forzar azul */
+            div[data-testid="stForm"] div[data-baseweb="input"]:focus-within {
+                border-color: #0066cc !important;
+                box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
+            }
             
-            if submitted:
-                if id_empleado and password:
-                    usuario = validar_login(id_empleado, password)
-                    if usuario:
-                        st.session_state.usuario = usuario
-                        st.success(f"✅ Bienvenido/a, {usuario['nombre']}!")
-                        st.rerun()
+            /* Botón de login - forzar azul en todos los estados */
+            div[data-testid="stFormSubmitButton"] button {
+                background-color: #0066cc !important;
+                color: white !important;
+                border-color: #0066cc !important;
+            }
+            div[data-testid="stFormSubmitButton"] button:hover {
+                background-color: #0052a3 !important;
+                color: white !important;
+                border-color: #0052a3 !important;
+            }
+            div[data-testid="stFormSubmitButton"] button:active {
+                background-color: #003d7a !important;
+                color: white !important;
+                border-color: #003d7a !important;
+            }
+            div[data-testid="stFormSubmitButton"] button:focus,
+            div[data-testid="stFormSubmitButton"] button:focus-visible {
+                background-color: #0052a3 !important;
+                color: white !important;
+                border-color: #0052a3 !important;
+                box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.25) !important;
+                outline: none !important;
+            }
+            </style>
+            """, unsafe_allow_html=True)
+            
+            # Usar formulario para permitir Enter/Intro
+            with st.form("login_form"):
+                id_empleado = st.text_input("ID de Empleado", placeholder="Ej: E001")
+                password = st.text_input("Contraseña", type="password", placeholder="Introduce tu contraseña")
+                
+                st.markdown("")  # Espacio
+                
+                # Submit button
+                submitted = st.form_submit_button("🔓 Iniciar Sesión", use_container_width=True)
+                
+                if submitted:
+                    if id_empleado and password:
+                        with st.spinner("🔄 Validando credenciales..."):
+                            usuario = validar_login(id_empleado, password)
+                            if usuario:
+                                st.session_state.usuario = usuario
+                                # Limpiar el placeholder inmediatamente para quitar el formulario
+                                login_placeholder.empty()
+                                st.rerun()
+                            else:
+                                st.error("❌ ID de empleado o contraseña incorrectos")
                     else:
-                        st.error("❌ ID de empleado o contraseña incorrectos")
-                else:
-                    st.warning("⚠️ Por favor, ingresa tu ID y contraseña")
-        
-        st.markdown("---")
+                        st.warning("⚠️ Por favor, ingresa tu ID y contraseña")
+            
+            st.markdown("---")
     
     st.stop()
 
