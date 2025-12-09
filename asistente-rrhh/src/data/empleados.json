@@ -3,8 +3,9 @@
     "id": "E001",
     "nombre": "Ana",
     "cargo": "Desarrolladora Senior",
+    "rol": "empleado",
     "vacaciones_totales": 22,
-    "vacaciones_usadas": 10,
+    "vacaciones_usadas": 12,
     "password": "Ana2024#",
     "foto_perfil": null
   },
@@ -12,9 +13,20 @@
     "id": "E002",
     "nombre": "Carlos",
     "cargo": "Director de Proyectos",
+    "rol": "empleado",
     "vacaciones_totales": 25,
     "vacaciones_usadas": 15,
     "password": "Carlos2024#",
+    "foto_perfil": null
+  },
+  {
+    "id": "ADMIN01",
+    "nombre": "Elena",
+    "cargo": "Gerente de RRHH",
+    "rol": "admin",
+    "vacaciones_totales": 22,
+    "vacaciones_usadas": 5,
+    "password": "Admin2024#",
     "foto_perfil": null
   }
 ]

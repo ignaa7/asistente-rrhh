@@ -90,33 +90,105 @@ textarea[data-testid="stChatInputTextArea"]:focus-visible {
 /* Botones generales - sin sobrescribir, dejar que config.toml maneje el color primario */
 
 /* Botones que deben ser azules - forzar azul y foco azul */
-button[kind="primary"] {
-    outline: none !important;
-}
-button[kind="primary"]:focus,
-button[kind="primary"]:focus-visible {
-    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.5) !important;
-    outline: none !important;
-}
+/* Botones que deben ser azules - forzar azul y foco azul */
+/* Botones que deben ser azules - forzar azul y foco azul */
+/* REGLA GENERAL PARA PRIMARY: Neutral por defecto, Verde en Hover (para el botón de Aprobar) */
+/* Botones que deben ser azules - forzar azul y foco azul */
+/* REGLA GENERAL PARA PRIMARY: Volver a comportamiento normal (Azul) para otros usos */
+/* Ya no modificamos primary globalmente para evitar conflictos con el botón de Aprobar que ahora es secondary */
 
-/* Botones destructivos (secondary) - forzar rojo en hover/active y texto blanco siempre */
-button[kind="secondary"] {
+/* EXCEPCIÓN: Botón de Login (Form Submit) - Mantener Azul siempre */
+div[data-testid="stFormSubmitButton"] button {
+    background-color: #0066cc !important;
+    border-color: #0066cc !important;
     color: white !important;
 }
-button[kind="secondary"]:hover {
+div[data-testid="stFormSubmitButton"] button:hover {
+    background-color: #0052a3 !important;
+    border-color: #0052a3 !important;
+    color: white !important;
+}
+div[data-testid="stFormSubmitButton"] button:active {
+    background-color: #003d7a !important;
+    border-color: #003d7a !important;
+    color: white !important;
+}
+div[data-testid="stFormSubmitButton"] button:focus,
+div[data-testid="stFormSubmitButton"] button:focus-visible {
+    box-shadow: 0 0 0 0.2rem rgba(0, 102, 204, 0.5) !important;
+    outline: none !important;
+    color: white !important;
+}
+
+/* REGLAS ESPECÍFICAS PARA BOTONES DE APROBACIÓN (EN COLUMNAS DEL SIDEBAR) */
+/* Base común: SOLO quitar la sombra/borde de foco que molesta. */
+section[data-testid="stSidebar"] div[data-testid="column"] button[kind="secondary"] {
+    box-shadow: none !important;
+    outline: none !important;
+    transition: none !important; /* Evitar animaciones que dejen rastros */
+}
+
+/* Columna 1: Botón Aprobar (Secondary) -> VERDE en interacción */
+/* ESTADO DE REPOSO EXPLÍCITO: Forzar borde gris y sin sombra */
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(1) button[kind="secondary"] {
+    border-color: rgba(49, 51, 63, 0.2) !important;
+    box-shadow: none !important;
+}
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(1) button[kind="secondary"]:hover {
+    background-color: #28a745 !important;
+    border-color: #28a745 !important;
+    color: white !important;
+}
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(1) button[kind="secondary"]:active {
+    background-color: #1e7e34 !important;
+    border-color: #1c7430 !important;
+    color: white !important;
+}
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(1) button[kind="secondary"]:focus:hover {
+    background-color: #28a745 !important;
+    color: white !important;
+}
+/* En foco (sin hover), mantener el estilo por defecto pero CON aura y borde verde (sin cambiar texto) */
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(1) button[kind="secondary"]:focus,
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(1) button[kind="secondary"]:focus-visible {
+    box-shadow: 0 0 0 0.2rem rgba(40, 167, 69, 0.5) !important; /* Aura verde */
+    border-color: #28a745 !important;
+    outline: none !important;
+    color: inherit !important;
+    background-color: transparent !important;
+}
+
+/* Columna 2: Botón Rechazar (Secondary) -> ROJO en interacción */
+/* ESTADO DE REPOSO EXPLÍCITO: Forzar borde gris y sin sombra */
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button[kind="secondary"] {
+    border-color: rgba(49, 51, 63, 0.2) !important;
+    box-shadow: none !important;
+}
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button[kind="secondary"]:hover {
     background-color: #c82333 !important;
     border-color: #bd2130 !important;
     color: white !important;
 }
-button[kind="secondary"]:active {
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button[kind="secondary"]:active {
     background-color: #a71d2a !important;
     border-color: #9c1c28 !important;
     color: white !important;
 }
-button[kind="secondary"]:focus,
-button[kind="secondary"]:focus-visible {
-    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5) !important;
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button[kind="secondary"]:focus:hover {
+    background-color: #c82333 !important;
+    color: white !important;
+}
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button[kind="secondary"]:focus,
+section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button[kind="secondary"]:focus-visible {
+    box-shadow: 0 0 0 0.2rem rgba(220, 53, 69, 0.5) !important; /* Aura roja */
+    border-color: #bd2130 !important;
     outline: none !important;
+    color: inherit !important;
+    background-color: transparent !important;
+}
+
+/* Botones destructivos (secondary) - Regla general de respaldo */
+button[kind="secondary"] {
     color: white !important;
 }
 </style>
@@ -175,11 +247,7 @@ if "usuario" not in st.session_state:
             }
             
             /* Botón de login - forzar azul en todos los estados */
-            div[data-testid="stFormSubmitButton"] button {
-                background-color: #0066cc !important;
-                color: white !important;
-                border-color: #0066cc !important;
-            }
+            /* Botón de login - ya manejado por la regla específica de stFormSubmitButton arriba */
             div[data-testid="stFormSubmitButton"] button:hover {
                 background-color: #0052a3 !important;
                 color: white !important;
@@ -387,6 +455,66 @@ with st.sidebar:
                 st.rerun()
     
     st.markdown("---")
+    
+    # ==================== PANEL DE ADMINISTRADOR ====================
+    if usuario.get("rol") == "admin":
+        st.subheader("👮 Panel de Administración")
+        
+        # Cargar solicitudes pendientes
+        solicitudes_path = os.path.join("src", "data", "solicitudes_vacaciones.json")
+        if os.path.exists(solicitudes_path):
+            with open(solicitudes_path, 'r', encoding='utf-8') as f:
+                solicitudes = json.load(f)
+            
+            pendientes = [s for s in solicitudes if s["estado"] == "pendiente"]
+            
+            if pendientes:
+                st.info(f"Tienes {len(pendientes)} solicitudes pendientes.")
+                
+                for sol in pendientes:
+                    with st.expander(f"📅 {sol['nombre_empleado']} ({sol['dias_solicitados']} días)"):
+                        st.write(f"**Fechas:** {sol['fecha_inicio']} a {sol['fecha_fin']}")
+                        st.write(f"**Comentarios:** {sol['comentarios']}")
+                        
+                        col_aprob, col_rech = st.columns(2)
+                        
+                        # Botón Aprobar (Secondary - pero verde por CSS de columna)
+                        if col_aprob.button("✅ Aprobar", key=f"aprob_{sol['id_solicitud']}", type="secondary"):
+                            # 1. Actualizar estado de solicitud
+                            sol["estado"] = "aprobada"
+                            with open(solicitudes_path, 'w', encoding='utf-8') as f:
+                                json.dump(solicitudes, f, indent=2, ensure_ascii=False)
+                            
+                            # 2. Descontar días al empleado
+                            empleados_path = os.path.join("src", "data", "empleados.json")
+                            with open(empleados_path, 'r', encoding='utf-8') as f:
+                                empleados_data = json.load(f)
+                            
+                            for emp in empleados_data:
+                                if emp["id"] == sol["id_empleado"]:
+                                    emp["vacaciones_usadas"] += sol["dias_solicitados"]
+                                    break
+                            
+                            with open(empleados_path, 'w', encoding='utf-8') as f:
+                                json.dump(empleados_data, f, indent=2, ensure_ascii=False)
+                            
+                            st.success(f"Solicitud aprobada. Días descontados.")
+                            st.rerun()
+                        
+                        # Botón Rechazar (Secondary - Rojo por CSS)
+                        if col_rech.button("❌ Rechazar", key=f"rech_{sol['id_solicitud']}", type="secondary"):
+                            sol["estado"] = "rechazada"
+                            with open(solicitudes_path, 'w', encoding='utf-8') as f:
+                                json.dump(solicitudes, f, indent=2, ensure_ascii=False)
+                            
+                            st.warning("Solicitud rechazada.")
+                            st.rerun()
+            else:
+                st.success("✅ No hay solicitudes pendientes.")
+        else:
+            st.info("No hay base de datos de solicitudes.")
+            
+        st.markdown("---")
     
     # Botones para exportar conversación
     st.subheader("📥 Exportar Conversación")

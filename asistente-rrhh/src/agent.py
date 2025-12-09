@@ -6,7 +6,7 @@ from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
 from langchain.tools.retriever import create_retriever_tool
 from langchain.memory import ConversationSummaryBufferMemory
 from src.rag import get_retriever
-from src.tools import calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, consultar_nomina
+from src.tools import calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, consultar_nomina, actualizar_baja_medica, consultar_bajas_medicas, consultar_solicitudes_vacaciones
 
 # Cargar variables de entorno
 load_dotenv()
@@ -42,7 +42,7 @@ def get_agent(memory=None, user_context=None):
         "Busca información sobre políticas de recursos humanos, teletrabajo, bajas médicas y beneficios en el manual del empleado."
     )
     
-    tools = [rag_tool, calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, consultar_nomina]
+    tools = [rag_tool, calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, actualizar_baja_medica, consultar_bajas_medicas, consultar_solicitudes_vacaciones, consultar_nomina]
 
     # 3. Configurar Memoria si no se proporciona
     if memory is None:
@@ -55,9 +55,12 @@ def get_agent(memory=None, user_context=None):
 
     # 4. Configurar Prompt con contexto del usuario
     # Construir información del usuario para el sistema
-    user_info = ""
+    from datetime import datetime
+    fecha_actual = datetime.now().strftime("%Y-%m-%d")
+    
+    user_info = f"FECHA ACTUAL: {fecha_actual}\n"
     if user_context:
-        user_info = f"""
+        user_info += f"""
 INFORMACIÓN DEL USUARIO ACTUAL:
 - Nombre: {user_context['nombre']}
 - ID de Empleado: {user_context['id']}
@@ -83,7 +86,22 @@ Cuando un empleado te haga una pregunta:
 4. Responde basándote en esa información de forma clara y directa
 5. Si la información recuperada responde la pregunta, úsala para dar una respuesta completa
 
-IMPORTANTE: Si la herramienta te devuelve información relevante, NO digas que no tienes información. Usa lo que te devuelve la herramienta para responder."""),
+IMPORTANTE: Si la herramienta te devuelve información relevante, NO digas que no tienes información. Usa lo que te devuelve la herramienta para responder.
+
+================================================================================
+CRITICAL INSTRUCTION: LANGUAGE DETECTION
+================================================================================
+You MUST detect the language of the user's LAST message and respond in THAT SAME LANGUAGE.
+This instruction OVERRIDES all others regarding language.
+
+- User: "Hola" -> You: "Hola..." (Spanish)
+- User: "Hello" -> You: "Hello..." (English)
+- User: "Je veux des vacances" -> You: "Bien sûr, je peux vous aider..." (French)
+- User: "Guten Morgen" -> You: "Guten Morgen..." (German)
+
+DO NOT RESPOND IN SPANISH IF THE USER SPEAKS FRENCH/ENGLISH/ETC.
+TRANSLATE YOUR FINAL ANSWER TO THE USER'S LANGUAGE.
+================================================================================"""),
         MessagesPlaceholder(variable_name="chat_history"),
         ("human", "{input}"),
         ("placeholder", "{agent_scratchpad}"),
