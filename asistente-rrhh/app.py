@@ -5,9 +5,14 @@ from langchain_openai import ChatOpenAI
 import os
 import json
 from dotenv import load_dotenv
+from langfuse.langchain import CallbackHandler
 
 # Cargar variables de entorno
 load_dotenv()
+
+# Configuración de rutas
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+DATA_PATH = os.path.join(BASE_DIR, "src", "data", "empleados.json")
 
 st.set_page_config(
     page_title="Asistente RRHH",
@@ -182,18 +187,13 @@ section[data-testid="stSidebar"] div[data-testid="column"]:nth-of-type(2) button
     color: inherit !important;
     background-color: transparent !important;
 }
-
-/* Botones destructivos (secondary) - Regla general de respaldo */
-button[kind="secondary"] {
-    color: white !important;
-}
 </style>
 """, unsafe_allow_html=True)
 
 # ==================== FUNCIONES DE AUTENTICACIÓN ====================
 def cargar_empleados():
     """Carga la base de datos de empleados"""
-    empleados_path = os.path.join("src", "data", "empleados.json")
+    empleados_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "data", "empleados.json")
     with open(empleados_path, 'r', encoding='utf-8') as f:
         return json.load(f)
 
@@ -345,7 +345,7 @@ with st.sidebar:
                         pass  # Si no se puede eliminar, continuar
                 
                 # Actualizar empleados.json
-                empleados_path = os.path.join("src", "data", "empleados.json")
+                empleados_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "data", "empleados.json")
                 with open(empleados_path, 'r', encoding='utf-8') as f:
                     empleados = json.load(f)
                 
@@ -376,7 +376,7 @@ with st.sidebar:
         
         if foto_upload is not None and st.button("💾 Guardar foto", key="btn_guardar_foto"):
             # Crear carpeta de avatares si no existe
-            avatares_dir = os.path.join("src", "data", "avatares")
+            avatares_dir = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "data", "avatares")
             os.makedirs(avatares_dir, exist_ok=True)
             
             # Guardar la imagen
@@ -388,7 +388,7 @@ with st.sidebar:
                 f.write(foto_upload.getbuffer())
             
             # Actualizar empleados.json
-            empleados_path = os.path.join("src", "data", "empleados.json")
+            empleados_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "data", "empleados.json")
             with open(empleados_path, 'r', encoding='utf-8') as f:
                 empleados = json.load(f)
             
@@ -456,7 +456,7 @@ with st.sidebar:
         st.subheader("👮 Panel de Administración")
         
         # Cargar solicitudes pendientes
-        solicitudes_path = os.path.join("src", "data", "solicitudes_vacaciones.json")
+        solicitudes_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "data", "solicitudes_vacaciones.json")
         if os.path.exists(solicitudes_path):
             with open(solicitudes_path, 'r', encoding='utf-8') as f:
                 solicitudes = json.load(f)
@@ -481,7 +481,7 @@ with st.sidebar:
                                 json.dump(solicitudes, f, indent=2, ensure_ascii=False)
                             
                             # 2. Descontar días al empleado
-                            empleados_path = os.path.join("src", "data", "empleados.json")
+                            empleados_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "src", "data", "empleados.json")
                             with open(empleados_path, 'r', encoding='utf-8') as f:
                                 empleados_data = json.load(f)
                             
@@ -634,8 +634,15 @@ if prompt := st.chat_input("¿En qué puedo ayudarte hoy?"):
     with st.chat_message("assistant", avatar=st.session_state.assistant_avatar):
         try:
             with st.spinner("Pensando..."):
+                # Inicializar Langfuse Callback
+                langfuse_handler = CallbackHandler()
+
                 # El agente usa la memoria automáticamente
-                response = st.session_state.agent.invoke({"input": prompt})
+                # Se le pasa el callback handler para monitorizar
+                response = st.session_state.agent.invoke(
+                    {"input": prompt},
+                    config={"callbacks": [langfuse_handler]}
+                )
                 output_text = response["output"]
                 st.markdown(output_text)
                 

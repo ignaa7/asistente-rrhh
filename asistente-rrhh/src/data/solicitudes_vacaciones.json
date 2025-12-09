@@ -86,5 +86,16 @@
     "comentarios": "Vacaciones de Navidad",
     "estado": "pendiente",
     "fecha_solicitud": "2025-12-09 10:20:41"
+  },
+  {
+    "id_solicitud": "SOL009",
+    "id_empleado": "ADMIN01",
+    "nombre_empleado": "Elena",
+    "fecha_inicio": "2025-12-10",
+    "fecha_fin": "2025-12-10",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "pendiente",
+    "fecha_solicitud": "2025-12-09 20:28:00"
   }
 ]
