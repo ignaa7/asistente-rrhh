@@ -89,13 +89,9 @@ textarea[data-testid="stChatInputTextArea"]:focus-visible {
 
 /* Botones generales - sin sobrescribir, dejar que config.toml maneje el color primario */
 
-/* Botones que deben ser azules - forzar azul y foco azul */
-/* Botones que deben ser azules - forzar azul y foco azul */
-/* Botones que deben ser azules - forzar azul y foco azul */
 /* REGLA GENERAL PARA PRIMARY: Neutral por defecto, Verde en Hover (para el botón de Aprobar) */
 /* Botones que deben ser azules - forzar azul y foco azul */
 /* REGLA GENERAL PARA PRIMARY: Volver a comportamiento normal (Azul) para otros usos */
-/* Ya no modificamos primary globalmente para evitar conflictos con el botón de Aprobar que ahora es secondary */
 
 /* EXCEPCIÓN: Botón de Login (Form Submit) - Mantener Azul siempre */
 div[data-testid="stFormSubmitButton"] button {
@@ -211,7 +207,6 @@ def validar_login(id_empleado, password):
         return {k: v for k, v in empleado.items() if k != "password"}
     return None
 
-# ==================== PANTALLA DE LOGIN ====================
 # ==================== PANTALLA DE LOGIN ====================
 if "usuario" not in st.session_state:
     # Crear un placeholder para toda la pantalla de login
@@ -639,7 +634,7 @@ if prompt := st.chat_input("¿En qué puedo ayudarte hoy?"):
     with st.chat_message("assistant", avatar=st.session_state.assistant_avatar):
         try:
             with st.spinner("Pensando..."):
-                # El agente ahora usa la memoria automáticamente
+                # El agente usa la memoria automáticamente
                 response = st.session_state.agent.invoke({"input": prompt})
                 output_text = response["output"]
                 st.markdown(output_text)

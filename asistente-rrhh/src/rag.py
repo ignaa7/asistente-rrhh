@@ -1,5 +1,4 @@
 import os
-import pickle
 from langchain.retrievers import EnsembleRetriever
 from langchain_community.retrievers import BM25Retriever
 from langchain_community.document_loaders import UnstructuredMarkdownLoader
@@ -93,9 +92,4 @@ def _split_docs(docs):
     )
     return text_splitter.split_documents(docs)
 
-if __name__ == "__main__":
-    # Test simple
-    retriever = get_retriever()
-    docs = retriever.invoke("teletrabajo")
-    print(f"Documentos recuperados: {len(docs)}")
-    print(docs[0].page_content)
+

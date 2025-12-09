@@ -571,30 +571,5 @@ def consultar_nomina(id_empleado: str, mes: str = "") -> str:
         return f"❌ Error al consultar la nómina: {str(e)}"
 
 
-if __name__ == "__main__":
-    print(calcular_vacaciones.invoke("E001"))
-    print("\n" + "="*50 + "\n")
-    print(solicitar_vacaciones.invoke({
-        "id_empleado": "E001",
-        "fecha_inicio": "2025-12-15",
-        "fecha_fin": "2025-12-22",
-        "comentarios": "Vacaciones de Navidad"
-    }))
-    print("\n" + "="*50 + "\n")
-    print(reportar_baja_medica.invoke({
-        "id_empleado": "E001",
-        "fecha_inicio": "2025-12-10",
-        "fecha_fin_estimada": "2025-12-12",
-        "motivo": "Gripe",
-        "notas": "Reposo en casa"
-    }))
-    print("\n" + "="*50 + "\n")
-    print(consultar_nomina.invoke({
-        "id_empleado": "E001"
-    }))
-    print("\n" + "="*50 + "\n")
-    print(consultar_nomina.invoke({
-        "id_empleado": "E002",
-        "mes": "2025-11"
-    }))
+
 

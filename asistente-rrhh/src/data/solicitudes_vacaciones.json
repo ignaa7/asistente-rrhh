@@ -75,5 +75,16 @@
     "comentarios": "",
     "estado": "aprobada",
     "fecha_solicitud": "2025-12-08 21:11:33"
+  },
+  {
+    "id_solicitud": "SOL008",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-15",
+    "fecha_fin": "2025-12-22",
+    "dias_solicitados": 8,
+    "comentarios": "Vacaciones de Navidad",
+    "estado": "pendiente",
+    "fecha_solicitud": "2025-12-09 10:20:41"
   }
 ]
