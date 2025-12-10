@@ -91,7 +91,11 @@ sequenceDiagram
 
 ## 4. Enlaces
 
+### Aplicación desplegada
+https://asistente-rrhh.streamlit.app
+
 ### Vídeo con diferentes interacciones
 https://youtu.be/TTs8O3gSTiQ
 
 ### Trazas de uso monitorizadas
+
