@@ -4,11 +4,7 @@ from langchain.memory import ConversationBufferMemory
 from langchain_openai import ChatOpenAI
 import os
 import json
-from dotenv import load_dotenv
 from langfuse.langchain import CallbackHandler
-
-# Cargar variables de entorno
-load_dotenv()
 
 # Configuración de rutas
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))

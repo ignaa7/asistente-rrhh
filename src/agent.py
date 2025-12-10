@@ -1,5 +1,3 @@
-import os
-from dotenv import load_dotenv
 from langchain_openai import ChatOpenAI
 from langchain.agents import AgentExecutor, create_tool_calling_agent
 from langchain_core.prompts import ChatPromptTemplate, MessagesPlaceholder
@@ -7,9 +5,9 @@ from langchain.tools.retriever import create_retriever_tool
 from langchain.memory import ConversationSummaryBufferMemory
 from src.rag import get_retriever
 from src.tools import calcular_vacaciones, solicitar_vacaciones, reportar_baja_medica, consultar_nomina, actualizar_baja_medica, consultar_bajas_medicas, consultar_solicitudes_vacaciones
+import streamlit as st
 
-# Cargar variables de entorno
-load_dotenv()
+# Cargar variables de entorno (Managed by Streamlit Secrets)
 
 def get_agent(memory=None, user_context=None):
     """
@@ -22,9 +20,11 @@ def get_agent(memory=None, user_context=None):
                      Ejemplo: {"id": "E001", "nombre": "Ana", "cargo": "Desarrolladora"}
     """
     # 1. Configurar LLM (OpenRouter con GPT-3.5-turbo)
-    api_key = os.getenv("OPENROUTER_API_KEY")
-    if not api_key:
-        raise ValueError("OPENROUTER_API_KEY no está configurada en el archivo .env")
+    # Usar st.secrets para obtener la clave API
+    try:
+        api_key = st.secrets["OPENROUTER_API_KEY"]
+    except KeyError:
+        raise ValueError("OPENROUTER_API_KEY no está configurada en los secrets de Streamlit (.streamlit/secrets.toml o deployment secrets)")
 
     llm = ChatOpenAI(
         model="openai/gpt-3.5-turbo",
