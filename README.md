@@ -86,3 +86,12 @@ sequenceDiagram
 6.  `consultar_bajas_medicas`: Historial de bajas.
 7.  `consultar_nomina`: Recupera detalles de nóminas específicas o la última disponible.
 8.  `buscar_politicas_rrhh`: Herramienta RAG para consultar el manual del empleado.
+
+---
+
+## 4. Enlaces
+
+### Vídeo con diferentes interacciones
+https://youtu.be/TTs8O3gSTiQ
+
+### Trazas de uso monitorizadas
