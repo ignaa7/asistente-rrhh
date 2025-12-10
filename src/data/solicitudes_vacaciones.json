@@ -1,0 +1,101 @@
+[
+  {
+    "id_solicitud": "SOL001",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-07",
+    "fecha_fin": "2025-12-07",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "rechazada",
+    "fecha_solicitud": "2025-12-05 19:30:54"
+  },
+  {
+    "id_solicitud": "SOL002",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-08",
+    "fecha_fin": "2025-12-08",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "rechazada",
+    "fecha_solicitud": "2025-12-06 11:50:07"
+  },
+  {
+    "id_solicitud": "SOL003",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-25",
+    "fecha_fin": "2025-12-25",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "aprobada",
+    "fecha_solicitud": "2025-12-06 11:50:55"
+  },
+  {
+    "id_solicitud": "SOL004",
+    "id_empleado": "ADMIN01",
+    "nombre_empleado": "Elena",
+    "fecha_inicio": "2023-10-27",
+    "fecha_fin": "2023-10-27",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "rechazada",
+    "fecha_solicitud": "2025-12-08 20:11:15"
+  },
+  {
+    "id_solicitud": "SOL005",
+    "id_empleado": "ADMIN01",
+    "nombre_empleado": "Elena",
+    "fecha_inicio": "2023-10-29",
+    "fecha_fin": "2023-10-29",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "rechazada",
+    "fecha_solicitud": "2025-12-08 20:11:52"
+  },
+  {
+    "id_solicitud": "SOL006",
+    "id_empleado": "ADMIN01",
+    "nombre_empleado": "Elena",
+    "fecha_inicio": "2023-12-09",
+    "fecha_fin": "2023-12-09",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "rechazada",
+    "fecha_solicitud": "2025-12-08 20:14:49"
+  },
+  {
+    "id_solicitud": "SOL007",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-09",
+    "fecha_fin": "2025-12-09",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "aprobada",
+    "fecha_solicitud": "2025-12-08 21:11:33"
+  },
+  {
+    "id_solicitud": "SOL008",
+    "id_empleado": "E001",
+    "nombre_empleado": "Ana",
+    "fecha_inicio": "2025-12-15",
+    "fecha_fin": "2025-12-22",
+    "dias_solicitados": 8,
+    "comentarios": "Vacaciones de Navidad",
+    "estado": "aprobada",
+    "fecha_solicitud": "2025-12-09 10:20:41"
+  },
+  {
+    "id_solicitud": "SOL009",
+    "id_empleado": "ADMIN01",
+    "nombre_empleado": "Elena",
+    "fecha_inicio": "2025-12-10",
+    "fecha_fin": "2025-12-10",
+    "dias_solicitados": 1,
+    "comentarios": "",
+    "estado": "rechazada",
+    "fecha_solicitud": "2025-12-09 20:28:00"
+  }
+]
