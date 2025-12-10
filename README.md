@@ -94,6 +94,12 @@ sequenceDiagram
 ### Aplicación desplegada
 https://asistente-rrhh.streamlit.app
 
+Credenciales para iniciar sesión:
+
+- ID: E001 // Contraseña: Ana2024#
+- ID: E002 // Contraseña: Carlos2024#
+- ID: ADMIN01 // Contraseña: Admin2024#
+
 ### Vídeo con diferentes interacciones
 https://youtu.be/TTs8O3gSTiQ
 
@@ -101,4 +107,5 @@ https://youtu.be/TTs8O3gSTiQ
 https://cloud.langfuse.com/project/cmiyrvgul0063ad064bscdan7/traces/c196ff9246f29ff27953f21f58d17f3a?timestamp=2025-12-09T18:38:00.908Z
 
 https://cloud.langfuse.com/project/cmiyrvgul0063ad064bscdan7/traces/86dc10a240ec453cf27769d886829fb9?timestamp=2025-12-10T15:18:08.219Z
+
 
